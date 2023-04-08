@@ -5,9 +5,13 @@ const app = express();
 
 const router = express.Router();
 
+let counter = 5;
+
 router.get("/", (req, res) => {
+  counter++;
+
   res.json({
-    hello: "hi!",
+    counter,
   });
 });
 
