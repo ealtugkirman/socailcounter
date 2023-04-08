@@ -16,76 +16,79 @@ client.set("pinterestcounter", 5);
 client.set("emailcounter", 5);
 
 router.get("/", (req, res) => {
-  client.get([
-    "facebookcounter",
-    "twittercounter",
-    "googlecounter",
-    "symbaloocounter",
-    "pinterestcounter",
-    "emailcounter",
-  ], function(err, results) {
-    if (err) throw err;
-    res.json({
+  client.get(
+    [
+      "facebookcounter",
+      "twittercounter",
+      "googlecounter",
+      "symbaloocounter",
+      "pinterestcounter",
+      "emailcounter",
+    ],
+    function (err, results) {
+      if (err) throw err;
+      res.json({
         facebookcounter: results[0],
         twittercounter: results[1],
         googlecounter: results[2],
         symbaloocounter: results[3],
         pinterestcounter: results[4],
         emailcounter: results[5],
-    });
-  });
+      });
+    }
+  );
 });
 
 router.put("/twitter", (req, res) => {
-  client.incr("twittercounter", function(err, reply) {
+  client.incr("twittercounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        twittercounter: reply,
+      twittercounter: reply,
     });
   });
 });
 
 router.put("/facebook", (req, res) => {
-  client.incr("facebookcounter", function(err, reply) {
+  client.incr("facebookcounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        facebookcounter: reply,
+      facebookcounter: reply,
     });
   });
 });
 
 router.put("/google", (req, res) => {
-  client.incr("googlecounter", function(err, reply) {
+  client.incr("googlecounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        googlecounter: reply,
+      googlecounter: reply,
     });
   });
 });
 
 router.put("/symbaloo", (req, res) => {
-  client.incr("symbaloocounter", function(err, reply) {
+  client.incr("symbaloocounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        symbaloocounter: reply,
+      symbaloocounter: reply,
     });
   });
 });
 
 router.put("/pinterest", (req, res) => {
-  client.incr("pinterestcounter", function(err, reply) {
+  client.incr("pinterestcounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        pinterestcounter: reply,
+      pinterestcounter: reply,
     });
   });
 });
 
 router.put("/email", (req, res) => {
-  client.incr("emailcounter", function(err, reply) {
+  client.incr("emailcounter", function (err, reply) {
     if (err) throw err;
     res.json({
-        emailcounter: reply,
+      emailcounter: reply,
     });
   });
 });
@@ -97,6 +100,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use("/.netlify/functions/api", router);
 
