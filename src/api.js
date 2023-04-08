@@ -1,63 +1,92 @@
 const cors = require("cors");
 const express = require("express");
 const serverless = require("serverless-http");
+const redis = require("redis");
+const client = redis.createClient();
 
 const app = express();
 
 const router = express.Router();
 
-let facebookcounter = 5;
-let twittercounter = 5;
-let googlecounter = 5;
-let symbaloocounter = 5;
-let pinterestcounter = 5;
-let emailcounter = 5;
+client.set("facebookcounter", 5);
+client.set("twittercounter", 5);
+client.set("googlecounter", 5);
+client.set("symbaloocounter", 5);
+client.set("pinterestcounter", 5);
+client.set("emailcounter", 5);
 
 router.get("/", (req, res) => {
-    res.json({
-        facebookcounter,
-        twittercounter,
-        googlecounter,
-        symbaloocounter,
-        pinterestcounter,
-        emailcounter,
+    client.mget([
+        "facebookcounter",
+        "twittercounter",
+        "googlecounter",
+        "symbaloocounter",
+        "pinterestcounter",
+        "emailcounter",
+    ], function (err, results) {
+        if (err) throw err;
+        res.json({
+            facebookcounter: results[0],
+            twittercounter: results[1],
+            googlecounter: results[2],
+            symbaloocounter: results[3],
+            pinterestcounter: results[4],
+            emailcounter: results[5],
+        });
     });
 });
 
 router.put("/twitter", (req, res) => {
-    twittercounter++;
-    res.json({
-        twittercounter,
+    client.incr("twittercounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            twittercounter: reply,
+        });
     });
 });
+
 router.put("/facebook", (req, res) => {
-    facebookcounter++;
-    res.json({
-        facebookcounter,
+    client.incr("facebookcounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            facebookcounter: reply,
+        });
     });
 });
+
 router.put("/google", (req, res) => {
-    googlecounter++;
-    res.json({
-        googlecounter,
+    client.incr("googlecounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            googlecounter: reply,
+        });
     });
 });
+
 router.put("/symbaloo", (req, res) => {
-    symbaloocounter++;
-    res.json({
-        symbaloocounter,
+    client.incr("symbaloocounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            symbaloocounter: reply,
+        });
     });
 });
+
 router.put("/pinterest", (req, res) => {
-    pinterestcounter++;
-    res.json({
-        pinterestcounter,
+    client.incr("pinterestcounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            pinterestcounter: reply,
+        });
     });
 });
+
 router.put("/email", (req, res) => {
-    emailcounter++;
-    res.json({
-        emailcounter,
+    client.incr("emailcounter", function (err, reply) {
+        if (err) throw err;
+        res.json({
+            emailcounter: reply,
+        });
     });
 });
 
