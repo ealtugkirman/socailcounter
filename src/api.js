@@ -7,11 +7,10 @@ const app = express();
 const router = express.Router();
 
 let counter = 5;
-let show = counter;
 
 router.get("/", (req, res) => {
   res.json({
-    show,
+    counter,
   });
 });
 
@@ -19,7 +18,7 @@ router.put("/", (req, res) => {
   counter++;
   res.json({
     counter,
-    show,
+    
   });
 });
 
