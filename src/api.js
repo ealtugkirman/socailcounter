@@ -1,106 +1,74 @@
 const cors = require("cors");
 const express = require("express");
 const serverless = require("serverless-http");
-const redis = require("redis");
-const client = redis.createClient();
+
 
 const app = express();
 
 const router = express.Router();
 
-client.set("facebookcounter", 5);
-client.set("twittercounter", 5);
-client.set("googlecounter", 5);
-client.set("symbaloocounter", 5);
-client.set("pinterestcounter", 5);
-client.set("emailcounter", 5);
+let facebookcounter = 5;
+let twittercounter = 5;
+let googlecounter = 5;
+let symbaloocounter = 5;
+let pinterestcounter = 5;
+let emailcounter = 5;
 
 router.get("/", (req, res) => {
-  client.get(
-    [
-      "facebookcounter",
-      "twittercounter",
-      "googlecounter",
-      "symbaloocounter",
-      "pinterestcounter",
-      "emailcounter",
-    ],
-    function (err, results) {
-      if (err) throw err;
-      res.json({
-        facebookcounter: results[0],
-        twittercounter: results[1],
-        googlecounter: results[2],
-        symbaloocounter: results[3],
-        pinterestcounter: results[4],
-        emailcounter: results[5],
-      });
-    }
-  );
+    res.json({
+        facebookcounter,
+        twittercounter,
+        googlecounter,
+        symbaloocounter,
+        pinterestcounter,
+        emailcounter,
+    });
 });
 
 router.put("/twitter", (req, res) => {
-  client.incr("twittercounter", function (err, reply) {
-    if (err) throw err;
+    twittercounter++;
     res.json({
-      twittercounter: reply,
+        twittercounter,
     });
-  });
 });
-
 router.put("/facebook", (req, res) => {
-  client.incr("facebookcounter", function (err, reply) {
-    if (err) throw err;
+    facebookcounter++;
     res.json({
-      facebookcounter: reply,
+        facebookcounter,
     });
-  });
 });
-
 router.put("/google", (req, res) => {
-  client.incr("googlecounter", function (err, reply) {
-    if (err) throw err;
+    googlecounter++;
     res.json({
-      googlecounter: reply,
+        googlecounter,
     });
-  });
 });
-
 router.put("/symbaloo", (req, res) => {
-  client.incr("symbaloocounter", function (err, reply) {
-    if (err) throw err;
+    symbaloocounter++;
     res.json({
-      symbaloocounter: reply,
+        symbaloocounter,
     });
-  });
 });
-
 router.put("/pinterest", (req, res) => {
-  client.incr("pinterestcounter", function (err, reply) {
-    if (err) throw err;
+    pinterestcounter++;
     res.json({
-      pinterestcounter: reply,
+        pinterestcounter,
     });
-  });
 });
-
 router.put("/email", (req, res) => {
-  client.incr("emailcounter", function (err, reply) {
-    if (err) throw err;
+    emailcounter++;
     res.json({
-      emailcounter: reply,
+        emailcounter,
     });
-  });
 });
 
 const corsOptions = {
-  origin: "*",
-  methods: "GET,PUT",
-  optionsSuccessStatus: 204,
+    origin: "*",
+    methods: "GET,PUT",
+    optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 app.use("/.netlify/functions/api", router);
 
